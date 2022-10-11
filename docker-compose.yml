@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   db:
-    container_name: locallens-wp-theme_mysql
+    container_name: bedrock_db
     environment:
       MYSQL_ROOT_PASSWORD: somewordpress
       MYSQL_DATABASE: wordpress
@@ -17,9 +17,9 @@ services:
       - ./db_data:/var/lib/mysql:delegated
 
   nginx-proxy:
-    container_name: locallens-wp-theme_nginx-proxy
+    container_name: bedrock_nginx-proxy
     depends_on:
-      - wordpress
+      - php-fpm
     image: jwilder/nginx-proxy
     ports:
       - 80:80
@@ -30,7 +30,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:delegated
   
   phpmyadmin:
-    container_name: locallens-wp-theme_phpmyadmin
+    container_name: bedrock_phpmyadmin
     environment:
       PMA_ARBITRARY: 1
       PMA_HOST: db
@@ -45,19 +45,15 @@ services:
       - 8080:80
     restart: always
 
-  wordpress:
-    container_name: locallens-wp-theme_wordpress
+  php-fpm:
+    container_name: bedrock_php-fpm
     depends_on:
       - db
     environment:
-      WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-      WORDPRESS_DB_NAME: wordpress
-      VIRTUAL_HOST: locallens.local
+      VIRTUAL_HOST: bedrock.local
     expose:
       - 9003
-    image: wordpress_xdebug
+    image: php-fpm_xdebug
     restart: "no"
     volumes:
       - ./:/var/www/html:delegated
