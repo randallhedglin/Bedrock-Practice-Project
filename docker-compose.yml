@@ -1,0 +1,52 @@
+version: "3.3"
+
+services:
+  db:
+    command: --max_allowed_packet=268435456
+    container_name: Visioneer_db
+    environment:
+      MYSQL_ROOT_PASSWORD: not-so-secure
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: not-so-secure
+    image: mariadb # necessary for M1 chips
+    ports:
+      - 33060:3306
+    restart: always
+    volumes:
+      - ./db_data:/var/lib/mysql:delegated
+
+  memcached:
+    container_name: Visioneer_memcached
+    image: memcached:1.5
+
+  nginx-proxy:
+    container_name: Visioneer_nginx-proxy
+    depends_on:
+      - wordpress
+    image: jwilder/nginx-proxy
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./certs:/etc/ssl/certs:ro
+      - ./my_nginx.conf:/etc/nginx/nginx.conf:ro
+      - /var/run/docker.sock:/tmp/docker.sock:delegated
+
+  wordpress:
+    container_name: Visioneer_wordpress
+    depends_on:
+      - db
+      - memcached
+    environment:
+      MEMCACHED_HOST: memcached:11211
+    image: docker.io/bitpoke/wordpress-runtime:bedrock
+    # image: serversideup/php:8.1-fpm-nginx
+    ports:
+      - "8080:8080"
+    restart: always
+    volumes:
+      - ./:/app
+
+volumes:
+  db_data: {}

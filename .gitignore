@@ -1,0 +1,49 @@
+# Application
+web/app/plugins/*
+!web/app/plugins/.gitkeep
+web/app/mu-plugins/*/
+web/app/themes/twentytwentytwo/
+web/app/upgrade
+web/app/uploads/*
+!web/app/uploads/.gitkeep
+web/app/cache/*
+
+# WordPress
+web/wp
+web/.htaccess
+
+# Logs
+*.log
+
+# Dotenv
+.env
+.env.*
+!.env.example
+
+# Composer
+/vendor
+
+# WP-CLI
+wp-cli.local.yml
+
+# Ignore local development folders.
+certs/
+db_data/
+xdebug/
+
+# Ignore Node dependency directories.
+**/node_modules/
+
+# Ignore log files and databases.
+**/*.log
+**/*.sql
+**/*.sqlite
+
+# Ignore other misc. junk files.
+**/.DS_Store
+**/Desktop.ini
+**/Thumbs.db
+**/.idea
+
+# Ignore *.exe files (WPE git push doesn't like them)
+**/*.exe
