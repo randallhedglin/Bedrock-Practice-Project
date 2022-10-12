@@ -63,7 +63,7 @@ services:
       VIRTUAL_HOST: bedrock.local
     expose:
       - 9003
-    image: docker.io/bitpoke/wordpress-runtime:bedrock
+    image: wordpress_xdebug
     restart: "no"
     volumes:
       - ./:/var/www/html:delegated
