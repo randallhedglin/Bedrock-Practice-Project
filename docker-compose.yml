@@ -1,0 +1,51 @@
+version: "3.3"
+
+services:
+  db:
+    command: --max_allowed_packet=268435456
+    environment:
+      MYSQL_ROOT_PASSWORD: not-so-secure
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: not-so-secure
+    image: mariadb # necessary for M1 chips
+    ports:
+      - 33060:3306
+    restart: always
+    volumes:
+      - ./db_data:/var/lib/mysql:delegated
+
+  memcached:
+    image: memcached:1.5
+
+  phpmyadmin:
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: db
+      PMA_USER: wordpress
+      PMA_PASSWORD: not-so-secure
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 256M
+    image: phpmyadmin
+    links:
+      - db
+    ports:
+      - 8080:80
+    restart: always
+
+  wordpress:
+    depends_on:
+      - db
+      - memcached
+    environment:
+      MEMCACHED_HOST: memcached:11211
+    image: bitpoke/wordpress-runtime:6.0.2-php-8.1
+    ports:
+      - 8081:8080
+    restart: always
+    volumes:
+      - ./:/app
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
+
+volumes:
+  db_data: {}
