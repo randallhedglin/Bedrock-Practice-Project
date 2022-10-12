@@ -45,3 +45,4 @@ db_data/
 
 # Ignore *.exe files (WPE git push doesn't like them)
 **/*.exe
+.DS_Store
