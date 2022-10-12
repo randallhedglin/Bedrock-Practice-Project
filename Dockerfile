@@ -1,4 +1,4 @@
-FROM wordpress:php8.1
+FROM docker.io/bitpoke/wordpress-runtime:bedrock
 
 RUN pecl install xdebug \
  && docker-php-ext-enable xdebug
