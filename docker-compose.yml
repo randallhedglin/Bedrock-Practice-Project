@@ -63,7 +63,7 @@ services:
       VIRTUAL_HOST: bedrock.local
     expose:
       - 9003
-    image: wordpress_xdebug
+    image: php-fpm_xdebug
     restart: "no"
     volumes:
       - ./:/var/www/html:delegated
