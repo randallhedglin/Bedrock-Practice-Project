@@ -16,10 +16,14 @@ services:
     volumes:
       - ./db_data:/var/lib/mysql:delegated
 
+  memcached:
+    container_name: bedrock_memcached
+    image: memcached:1.5
+
   nginx-proxy:
     container_name: bedrock_nginx-proxy
     depends_on:
-      - php-fpm
+      - wordpress
     image: jwilder/nginx-proxy
     ports:
       - 80:80
@@ -45,15 +49,21 @@ services:
       - 8080:80
     restart: always
 
-  php-fpm:
-    container_name: bedrock_php-fpm
+  wordpress:
+    container_name: bedrock_wordpress
     depends_on:
       - db
+      - memcached
     environment:
+      DB_HOST: db:3306
+      DB_USER: wordpress
+      DB_PASSWORD: wordpress
+      DB_NAME: wordpress
+      MEMCACHED_HOST: memcached:11211
       VIRTUAL_HOST: bedrock.local
     expose:
       - 9003
-    image: php-fpm_xdebug
+    image: wordpress_bedrock_xdebug
     restart: "no"
     volumes:
       - ./:/var/www/html:delegated
