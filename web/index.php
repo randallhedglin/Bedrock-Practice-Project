@@ -1,8 +1,4 @@
-<?php
-//ini_set('upload_max_filesize', '256M');
-//ini_set('post_max_size', '256M');
-//ini_set('memory_limit', '512M');
-die(phpinfo());
+<?php die(phpinfo());
 /**
  * WordPress View Bootstrapper
  */

@@ -16,9 +16,6 @@ Config::define('SCRIPT_DEBUG', true);
 Config::define('DISALLOW_INDEXING', true);
 
 ini_set('display_errors', '1');
-//ini_set('upload_max_filesize', '256M');
-//ini_set('post_max_size', '256M');
-//ini_set('memory_limit', '512M');
 
 // Enable plugin and theme updates and installation from the admin
 Config::define('DISALLOW_FILE_MODS', false);
