@@ -45,7 +45,7 @@ services:
     restart: always
     volumes:
       - ./:/app:delegated
-      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
 
 volumes:
   db_data: {}
